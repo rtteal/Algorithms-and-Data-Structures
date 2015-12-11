@@ -1,7 +1,10 @@
 package alg;
 
 public class MergeSort {
-    public static void mergeSort(int[] a) {
+    public static void sort(int[] a) {
+        if (null == a || a.length <= 1) {
+            return;
+        }
         int[] tmp = new int[a.length];
         mergeSort(a, tmp, 0, a.length - 1);
     }
