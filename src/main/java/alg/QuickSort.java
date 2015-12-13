@@ -1,6 +1,7 @@
 package alg;
 
 public class QuickSort {
+
     public static void sort(int[] a) {
         if (null == a || a.length <= 1) {
             return;
