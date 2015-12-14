@@ -86,7 +86,6 @@ public class HashTable<K,V> {
                     put(e.key, e.value);
                     e = e.next;
                 }
-                tab[i] = null;
             }
             return table;
         }

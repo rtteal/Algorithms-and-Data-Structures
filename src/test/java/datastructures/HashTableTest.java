@@ -5,7 +5,8 @@ import org.junit.Test;
 
 import static java.lang.String.format;
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class HashTableTest {
 
@@ -23,7 +24,7 @@ public class HashTableTest {
         hashTable.put(key, expected);
         Integer result = hashTable.get(key);
         assertNotNull(format("Could not find expected value.  Expected %d, found '%s'.", expected, result), result);
-        assertTrue(format("Could not find expected value.  Expected %d, found '%s'.", expected, result), expected.equals(result));
+        assertEquals(format("Could not find expected value.  Expected %d, found '%s'.", expected, result), expected, result);
     }
 
     @Test
@@ -43,6 +44,7 @@ public class HashTableTest {
         for (Integer i = 0; i < size; i++) {
             hashTable.put("" + i, i);
         }
+
         for (Integer i = 0; i < size; i++) {
             Integer result = hashTable.get("" + i);
             assertEquals(format("Expected: %s, Found: %s. size=%s", i, result, size), result, i);
