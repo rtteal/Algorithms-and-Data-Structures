@@ -6,7 +6,7 @@ public class HashTable<K,V> {
 
     private static final int DEFAULT_SIZE = 16;
 
-    static class Node<K,V> {
+    private static class Node<K,V> {
         final int hash;
         final K key;
         V value;
@@ -20,7 +20,7 @@ public class HashTable<K,V> {
         }
     }
 
-    static final int hash(Object key) {
+    private static int hash(Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
@@ -31,9 +31,10 @@ public class HashTable<K,V> {
 
     public V get(K key) {
         int n, hash = hash(key);
-        if (table == null || (n = table.length) == 0)
+        if (table == null || (n = table.length) == 0) {
             return null;
-        Node<K,V> p = table[(n - 1) & hash(key)];
+        }
+        Node<K,V> p = table[(n - 1) & hash];
         while (p != null) {
             if (p.hash == hash && Objects.equals(p.key, key)) {
                 return p.value;
@@ -44,44 +45,41 @@ public class HashTable<K,V> {
     }
 
     public V put(K key, V value) {
-        if (table == null || table.length == 0)
+        if (table == null || table.length == 0) {
             table = resize();
+        }
         Node<K,V> p;
         int n = table.length, i, hash = hash(key);
         if ((p = table[i = (n - 1) & hash]) == null) {
             table[i] = new Node<>(hash, key, value, null);
-        }
-        else {
+        } else {
             while (true) {
                 if (p.hash == hash && Objects.equals(p.key, key)) {
                     V oldVal = p.value;
                     p.value = value;
                     return oldVal;
                 }
-                if (p.next == null)
+                if (p.next == null) {
                     break;
+                }
                 p = p.next;
             }
             p.next = new Node<>(hash, key, value, null);
         }
-        if (++size == n)
+        if (++size == n) {
             table = resize();
+        }
         return null;
     }
 
     private Node<K,V>[] resize() {
         if (table == null || table.length == 0) {
-            @SuppressWarnings({"rawtypes","unchecked"})
-            Node<K,V>[] tab = (Node<K,V>[]) new Node[DEFAULT_SIZE];
-            return tab;
+            return genericArr(DEFAULT_SIZE);
         } else {
             Node<K,V>[] tab = table;
-            @SuppressWarnings({"rawtypes","unchecked"})
-            Node<K,V>[] tmp = new Node[table.length << 1];
-            table = tmp;
+            table = genericArr(table.length << 1);
             size = 0;
-            for (int i = 0; i < tab.length; i++) {
-                Node<K,V> e = tab[i];
+            for (Node<K,V> e : tab) {
                 while (e != null) {
                     put(e.key, e.value);
                     e = e.next;
@@ -89,6 +87,11 @@ public class HashTable<K,V> {
             }
             return table;
         }
+    }
+
+    @SuppressWarnings({"rawtypes","unchecked"})
+    private Node<K,V>[] genericArr(int len) {
+        return (Node<K,V>[]) new Node[len];
     }
 
 }
