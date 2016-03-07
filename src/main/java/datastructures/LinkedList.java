@@ -1,9 +1,11 @@
 package datastructures;
 
 
+import java.util.Iterator;
+
 import static java.lang.String.format;
 
-public class LinkedList<E> implements List<E> {
+public class LinkedList<E> implements List<E>, Iterable<E> {
 
     private static class ListNode<E> {
         ListNode<E> prev;
@@ -26,10 +28,11 @@ public class LinkedList<E> implements List<E> {
         ListNode<E> l = last;
         ListNode<E> n = new ListNode<>(l, e, null);
         last = n;
-        if (l == null)
+        if (l == null) {
             first = n;
-        else
+        } else {
             l.next = n;
+        }
         size++;
     }
 
@@ -70,4 +73,22 @@ public class LinkedList<E> implements List<E> {
         return size == 0;
     }
 
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>() {
+            private ListNode<E> current = first;
+
+            @Override
+            public boolean hasNext() {
+                return current != null && current.next != null;
+            }
+
+            @Override
+            public E next() {
+                E tmp = current.ele;
+                current = current.next;
+                return tmp;
+            }
+        };
+    }
 }

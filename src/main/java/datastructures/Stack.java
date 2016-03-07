@@ -33,6 +33,10 @@ public class Stack<E> {
         return item;
     }
 
+    public boolean isEmpty() {
+        return location == 0;
+    }
+
     private void resize() {
         if (stack == null || stack.length == 0) {
             @SuppressWarnings({"unchecked", "rawtypes"})

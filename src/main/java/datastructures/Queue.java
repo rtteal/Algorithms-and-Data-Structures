@@ -40,6 +40,10 @@ public class Queue<T> {
         return queue.length;
     }
 
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
     private void resizeIfNeeded() {
         if (size() == len())
             queue = Arrays.copyOf(queue, len() << 1);
