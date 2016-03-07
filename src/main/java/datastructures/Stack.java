@@ -34,7 +34,7 @@ public class Stack<E> {
     }
 
     public boolean isEmpty() {
-        return location == 0;
+        return location <= 0;
     }
 
     private void resize() {
